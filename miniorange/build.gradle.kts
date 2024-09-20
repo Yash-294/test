@@ -9,7 +9,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -25,17 +24,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
 dependencies {
-
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     testImplementation("junit:junit:4.13.2")
@@ -43,34 +37,37 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     api("com.android.volley:volley:1.2.1")
     api("org.bouncycastle:bcprov-jdk15on:1.70")
-
 }
 
-//tasks.register("printComponents") {
-//    doLast {
-//        val components = project.components
-//        components.forEach { component ->
-//            println("Component: ${component.name}")
-//        }
-//    }
-//}
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            pom {
-                withXml {
-                    asNode().apply {
-                        appendNode("dependencies").apply {
-                            appendNode("dependency").apply {
-                                appendNode("groupId", "com.android.volley")
-                                appendNode("artifactId", "volley")
-                                appendNode("version", "1.2.1") // Use the correct version
+                groupId = "com.github.shubhammali929"
+                artifactId = "mylibrary"
+                version = "1.4"
+
+                pom {
+                    withXml {
+                        asNode().appendNode("dependencies").let { dependenciesNode ->
+                            configurations.implementation.get().allDependencies.forEach { dependency ->
+                                dependenciesNode.appendNode("dependency").apply {
+                                    appendNode("groupId", dependency.group)
+                                    appendNode("artifactId", dependency.name)
+                                    appendNode("version", dependency.version)
+                                    appendNode("scope", "compile")
+                                }
                             }
-                            appendNode("dependency").apply {
-                                appendNode("groupId", "org.bouncycastle")
-                                appendNode("artifactId", "bcprov-jdk15on")
-                                appendNode("version", "1.68") // Use the correct version
+
+                            configurations.api.get().allDependencies.forEach { dependency ->
+                                dependenciesNode.appendNode("dependency").apply {
+                                    appendNode("groupId", dependency.group)
+                                    appendNode("artifactId", dependency.name)
+                                    appendNode("version", dependency.version)
+                                    appendNode("scope", "runtime")
+                                }
                             }
                         }
                     }
