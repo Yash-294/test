@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "com.android.miniorange"
+    namespace = "com.andorid.miniorange"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 24
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -33,8 +34,8 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
-
 dependencies {
+
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     testImplementation("junit:junit:4.13.2")
@@ -42,4 +43,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     api("com.android.volley:volley:1.2.1")
     api("org.bouncycastle:bcprov-jdk15on:1.70")
+
 }
