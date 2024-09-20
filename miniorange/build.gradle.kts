@@ -29,30 +29,6 @@ android {
     }
 }
 
-publishing {
-    publications {
-        // Java Publication for API dependencies
-        create<MavenPublication>("mavenJava") {
-            pom.withXml {
-                val dependenciesNode = asNode().appendNode("dependencies")
-                configurations["api"].allDependencies.forEach { dependency ->
-                    val dependencyNode = dependenciesNode.appendNode("dependency")
-                    dependencyNode.appendNode("groupId", dependency.group)
-                    dependencyNode.appendNode("artifactId", dependency.name)
-                    dependencyNode.appendNode("version", dependency.version)
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            url = uri("https://jitpack.io") // Your repository information goes here
-        }
-    }
-}
-
-
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
