@@ -45,3 +45,37 @@ dependencies {
     api("org.bouncycastle:bcprov-jdk15on:1.70")
 
 }
+
+//tasks.register("printComponents") {
+//    doLast {
+//        val components = project.components
+//        components.forEach { component ->
+//            println("Component: ${component.name}")
+//        }
+//    }
+//}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            pom {
+                withXml {
+                    asNode().apply {
+                        appendNode("dependencies").apply {
+                            appendNode("dependency").apply {
+                                appendNode("groupId", "com.android.volley")
+                                appendNode("artifactId", "volley")
+                                appendNode("version", "1.2.1") // Use the correct version
+                            }
+                            appendNode("dependency").apply {
+                                appendNode("groupId", "org.bouncycastle")
+                                appendNode("artifactId", "bcprov-jdk15on")
+                                appendNode("version", "1.68") // Use the correct version
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
