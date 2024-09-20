@@ -51,23 +51,13 @@ afterEvaluate {
 
                 pom {
                     withXml {
-                        asNode().appendNode("dependencies").let { dependenciesNode ->
-                            configurations.implementation.get().allDependencies.forEach { dependency ->
-                                dependenciesNode.appendNode("dependency").apply {
-                                    appendNode("groupId", dependency.group)
-                                    appendNode("artifactId", dependency.name)
-                                    appendNode("version", dependency.version)
-                                    appendNode("scope", "compile")
-                                }
-                            }
-
-                            configurations.api.get().allDependencies.forEach { dependency ->
-                                dependenciesNode.appendNode("dependency").apply {
-                                    appendNode("groupId", dependency.group)
-                                    appendNode("artifactId", dependency.name)
-                                    appendNode("version", dependency.version)
-                                    appendNode("scope", "runtime")
-                                }
+                        val dependenciesNode = asNode().appendNode("dependencies")
+                        configurations.getByName("api") {
+                            dependencies.forEach {
+                                val dependencyNode = dependenciesNode.appendNode("dependency")
+                                dependencyNode.appendNode("groupId", it.group)
+                                dependencyNode.appendNode("artifactId", it.name)
+                                dependencyNode.appendNode("version", it.version)
                             }
                         }
                     }
