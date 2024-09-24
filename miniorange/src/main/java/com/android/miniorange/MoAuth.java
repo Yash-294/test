@@ -1,4 +1,4 @@
-package com.andorid.miniorange;
+package com.android.miniorange;
 import static android.util.Base64.NO_PADDING;
 import static android.util.Base64.NO_WRAP;
 import static android.util.Base64.URL_SAFE;

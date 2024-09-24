@@ -1,4 +1,4 @@
-package com.andorid.miniorange;
+package com.android.miniorange;
 
 import androidx.appcompat.app.AppCompatActivity;
 
